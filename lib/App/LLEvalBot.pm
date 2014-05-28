@@ -7,8 +7,6 @@ our $VERSION = "0.01";
 
 use UnazuSan;
 use LLEval;
-use Encode;
-use Log::Minimal;
 use Config::Pit;
 
 use Mouse;
@@ -62,6 +60,16 @@ has unazu_san => (
     },
 );
 
+has _languages => (
+    is    => 'ro',
+    isa   => 'HashRef',
+    lazy  => 1,
+    default => sub {
+        shift->lleval->languages;
+    },
+
+);
+
 no Mouse;
 
 sub call_eval {
@@ -69,13 +77,11 @@ sub call_eval {
 
     my $lleval = $self->lleval;
 
-    my %languages = %{$lleval->languages};
+    my %languages = %{ $self->_languages };
     my $langs     = '(?:' . join('|', map { quotemeta } keys %languages) . ')';
 
     my $reg_nick = quotemeta $self->config->{nickname};
     $message =~ s/\A \s* $reg_nick \s* : \s*//xms;
-
-    my $result = $self->call_eval($message);
 
     my ($lang, $src) = $message =~ /\A ($langs) \s+ (.+)/xms;
     unless ($lang) {
@@ -90,21 +96,25 @@ sub call_eval {
         $src = 'use 5.16.1;use warnings;'.$src if $lang eq 'pl516';
     }
 
-    $lleval->call_eval( $src, $lang );
+    my $result = $lleval->call_eval( $src, $lang );
+    $result->{lang} = $lang;
+    $result;
 }
 
 sub run {
     my $self = shift;
 
+    my $unazu_san = $self->unazu_san;
     $unazu_san->on_command(
         '' => sub {
             my $receive = shift;
 
-            my $result = $self->call_eval($receive->message);
+            my $result   = $self->call_eval($receive->message);
+            my $language = $self->_languages->{$result->{lang}};
 
             # error?
             if ($result->{status}) {
-                $receive->reply("$languages{$lang} returned $result->{status}!!");
+                $receive->reply("$language returned $result->{status}!!");
             }
             if ($result->{error}) {
                 $receive->reply("error: $result->{error}");
@@ -118,13 +128,12 @@ sub run {
                     @lines = @lines[0..14];
                     push @lines, ' (snip!)';
                 }
-                $receive->reply($_) @lines;
+                $receive->reply($_) for @lines;
             }
         },
     );
     $unazu_san->run;
 }
-
 
 1;
 __END__
