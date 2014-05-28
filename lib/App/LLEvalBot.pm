@@ -53,7 +53,9 @@ has unazu_san => (
     default => sub {
         my $self = shift;
 
+        my @join_channels = ($self->config->{channel});
         UnazuSan->new(
+            join_channels => \@join_channels,
             %{ $self->config },
             %{ $self->unazu_config },
         );
@@ -67,7 +69,6 @@ has _languages => (
     default => sub {
         shift->lleval->languages;
     },
-
 );
 
 no Mouse;
@@ -146,6 +147,15 @@ App::LLEvalBot - IRC bot for LLeval
 =head1 SYNOPSIS
 
     use App::LLEvalBot;
+    my $bot = App::LLEvalBot->new(
+        config => {
+            host     => 'irc.example.com',
+            port     => 6667,
+            nickname => 'lleval_bot',
+            channel  => '#test',
+        },
+    );
+    $bot->run;
 
 =head1 DESCRIPTION
 
