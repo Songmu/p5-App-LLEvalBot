@@ -13,7 +13,7 @@ use Mouse;
 
 has config_name => (
     is      => 'ro',
-    isa     => 'HashRef',
+    isa     => 'Str',
     default => 'lleval_bot',
 );
 
@@ -28,7 +28,7 @@ has config => (
             port     => '',
             password => '',
             channel  => '',
-            nickname => '',
+            nickname => 'lleval_bot',
         });
     },
 );
@@ -85,15 +85,14 @@ sub call_eval {
 
     my ($lang, $src) = $message =~ /\A ($langs) \s+ (.+)/xms;
     unless ($lang) {
-        $lang = 'pl516';
+        $lang = 'pl';
         $src = $message;
     }
     if ($lang =~ /^pl/) {
         unless ( $src =~ /(?:print|say)/ ) {
             $src = "print sub { ${src} }->()";
         }
-        $src = 'use 5.14.2;use warnings;'.$src if $lang eq 'pl';
-        $src = 'use 5.16.1;use warnings;'.$src if $lang eq 'pl516';
+        $src = 'use 5.016;use warnings;'.$src;
     }
 
     my $result = $lleval->call_eval( $src, $lang );
@@ -142,7 +141,7 @@ __END__
 
 =head1 NAME
 
-App::LLEvalBot - It's new $module
+App::LLEvalBot - IRC bot for LLeval
 
 =head1 SYNOPSIS
 
@@ -150,7 +149,7 @@ App::LLEvalBot - It's new $module
 
 =head1 DESCRIPTION
 
-App::LLEvalBot is ...
+App::LLEvalBot is IRC bot for LLeval.
 
 =head1 LICENSE
 
