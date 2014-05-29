@@ -7,35 +7,13 @@ our $VERSION = "0.01";
 
 use UnazuSan;
 use LLEval;
-use Config::Pit;
 
 use Mouse;
-
-has config_name => (
-    is      => 'ro',
-    isa     => 'Str',
-    default => 'lleval_bot',
-);
 
 has config => (
     is      => 'ro',
     isa     => 'HashRef',
     lazy    => 1,
-    default => sub {
-        my $self = shift;
-        pit_get($self->config_name => {
-            host     => '',
-            port     => '',
-            password => '',
-            channel  => '',
-            nickname => 'lleval_bot',
-        });
-    },
-);
-
-has unazu_config => (
-    is      => 'ro',
-    isa     => 'HashRef',
     default => sub { {} },
 );
 
@@ -53,12 +31,8 @@ has unazu_san => (
     default => sub {
         my $self = shift;
 
-        my @join_channels = ($self->config->{channel});
-        UnazuSan->new(
-            join_channels => \@join_channels,
-            %{ $self->config },
-            %{ $self->unazu_config },
-        );
+        my %conf = %{ $self->config };
+        UnazuSan->new(%conf);
     },
 );
 
