@@ -20,7 +20,7 @@ sub parse_options {
     my ($class, @argv) = @_;
 
     my $parser = Getopt::Long::Parser->new(
-        config => [qw/posix_default no_ignore_case pass_through/],
+        config => [qw/posix_default no_ignore_case pass_through auto_help/],
     );
 
     $parser->getoptionsfromarray(\@argv, \my %opt, qw/
@@ -29,7 +29,7 @@ sub parse_options {
         password=s
         channels=s@
         nickname=s
-        enable_ssl
+        enable-ssl
     /) or pod2usage(1);
 
     my @required_options = qw/host channels/;
@@ -37,6 +37,7 @@ sub parse_options {
 
     $opt{channels}      = [ map { split /,/, $_ } @{ $opt{channels} } ];
     $opt{join_channels} = delete $opt{channels};
+    $opt{enable_ssl}    = delete $opt{'enable-ssl'} if exists $opt{'enable-ssl'};
     $opt{nickname}      //= 'lleval_bot';
 
     (\%opt, \@argv);
@@ -54,7 +55,18 @@ App::LLEvalBot::CLI - IRC bot for LLeval
 
 =head1 SYNOPSIS
 
-    % lleval-bot.pl --channels=test --host=irc.example.com [opt]
+    use App::LLEvalBot::CLI;
+    App::LLEvalBot::CLI->run(@ARGV);
+
+=head1 METHODS
+
+=over
+
+=item methods
+
+=item parse_options
+
+=back
 
 =head1 DESCRIPTION
 
