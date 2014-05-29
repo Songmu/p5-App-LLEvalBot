@@ -1,14 +1,23 @@
 # NAME
 
-App::LLEvalBot - It's new $module
+App::LLEvalBot - IRC bot for LLeval
 
 # SYNOPSIS
 
     use App::LLEvalBot;
+    my $bot = App::LLEvalBot->new(
+        config => {
+            host     => 'irc.example.com',
+            port     => 6667,
+            nickname => 'lleval_bot',
+            channel  => '#test',
+        },
+    );
+    $bot->run;
 
 # DESCRIPTION
 
-App::LLEvalBot is ...
+App::LLEvalBot is IRC bot for LLeval.
 
 # LICENSE
 

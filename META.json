@@ -1,5 +1,5 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "IRC bot for LLeval",
    "author" : [
       "Songmu <y.songmu@gmail.com>"
    ],
@@ -44,16 +44,33 @@
       },
       "runtime" : {
          "requires" : {
-            "perl" : "5.008005"
+            "Getopt::Long" : "2.39",
+            "LLEval" : "0",
+            "Mouse" : "0",
+            "Pod::Usage" : "0",
+            "UnazuSan" : "0",
+            "perl" : "5.010001"
          }
       },
       "test" : {
          "requires" : {
+            "Test::Exit" : "0",
             "Test::More" : "0.98"
          }
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/Songmu/p5-App-LLEvalBot/issues"
+      },
+      "homepage" : "https://github.com/Songmu/p5-App-LLEvalBot",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/Songmu/p5-App-LLEvalBot.git",
+         "web" : "https://github.com/Songmu/p5-App-LLEvalBot"
+      }
+   },
    "version" : "0.01",
    "x_authority" : "cpan:SONGMU"
 }
