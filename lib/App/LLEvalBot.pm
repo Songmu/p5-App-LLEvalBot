@@ -112,11 +112,13 @@ sub run {
 1;
 __END__
 
+=for stopwords LLEval
+
 =encoding utf-8
 
 =head1 NAME
 
-App::LLEvalBot - IRC bot for LLeval
+App::LLEvalBot - IRC bot for LLEval
 
 =head1 SYNOPSIS
 
@@ -133,7 +135,7 @@ App::LLEvalBot - IRC bot for LLeval
 
 =head1 DESCRIPTION
 
-App::LLEvalBot is IRC bot for LLeval.
+App::LLEvalBot is IRC bot for LLEval.
 
 =head1 LICENSE
 

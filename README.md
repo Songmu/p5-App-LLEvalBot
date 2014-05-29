@@ -1,6 +1,6 @@
 # NAME
 
-App::LLEvalBot - IRC bot for LLeval
+App::LLEvalBot - IRC bot for LLEval
 
 # SYNOPSIS
 
@@ -17,7 +17,7 @@ App::LLEvalBot - IRC bot for LLeval
 
 # DESCRIPTION
 
-App::LLEvalBot is IRC bot for LLeval.
+App::LLEvalBot is IRC bot for LLEval.
 
 # LICENSE
 
